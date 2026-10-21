@@ -1,0 +1,109 @@
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { Colors } from '../lib/theme';
+
+import HomeScreen from '../screens/HomeScreen';
+import JobsScreen from '../screens/JobsScreen';
+import MarketplaceScreen from '../screens/MarketplaceScreen';
+import AffiliateScreen from '../screens/AffiliateScreen';
+import ServicesScreen from '../screens/ServicesScreen';
+import AboutScreen from '../screens/AboutScreen';
+import ContactScreen from '../screens/ContactScreen';
+import PrivacyScreen from '../screens/PrivacyScreen';
+import TermsScreen from '../screens/TermsScreen';
+import AdvertiseScreen from '../screens/AdvertiseScreen';
+
+export type RootStackParamList = {
+  MainTabs: undefined;
+  Home: undefined;
+  Jobs: undefined;
+  Marketplace: undefined;
+  Affiliate: undefined;
+  Services: undefined;
+  About: undefined;
+  Contact: undefined;
+  Privacy: undefined;
+  Terms: undefined;
+  Advertise: undefined;
+};
+
+export type RootTabParamList = {
+  Home: undefined;
+  Jobs: undefined;
+  Marketplace: undefined;
+  Affiliate: undefined;
+  Services: undefined;
+};
+
+const Tab = createBottomTabNavigator<RootTabParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+function MainTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: Colors.primary,
+        tabBarInactiveTintColor: '#64748b',
+        tabBarStyle: {
+          height: 64,
+          paddingTop: 8,
+          paddingBottom: 10,
+          borderTopWidth: 1,
+          borderTopColor: '#e2e8f0',
+          backgroundColor: '#ffffff',
+        },
+        tabBarLabelStyle: {
+          fontSize: 11,
+          fontWeight: '700',
+        },
+        tabBarIcon: ({ color, size }) => {
+          const iconName = {
+            Home: 'home',
+            Jobs: 'briefcase',
+            Marketplace: 'storefront',
+            Affiliate: 'gift',
+            Services: 'construct',
+          }[route.name] as keyof typeof Ionicons.glyphMap;
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Jobs" component={JobsScreen} />
+      <Tab.Screen name="Marketplace" component={MarketplaceScreen} />
+      <Tab.Screen name="Affiliate" component={AffiliateScreen} />
+      <Tab.Screen name="Services" component={ServicesScreen} />
+    </Tab.Navigator>
+  );
+}
+
+export default function AppNavigator() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: Colors.primary },
+          headerTintColor: '#ffffff',
+          headerTitleStyle: { fontWeight: '700' },
+          contentStyle: { backgroundColor: '#f8fafc' },
+        }}
+      >
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="About" component={AboutScreen} options={{ title: 'About Us' }} />
+        <Stack.Screen name="Contact" component={ContactScreen} options={{ title: 'Contact Us' }} />
+        <Stack.Screen name="Privacy" component={PrivacyScreen} options={{ title: 'Privacy Policy' }} />
+        <Stack.Screen name="Terms" component={TermsScreen} options={{ title: 'Terms & Conditions' }} />
+        <Stack.Screen name="Advertise" component={AdvertiseScreen} options={{ title: 'Advertise With Us' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
